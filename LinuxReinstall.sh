@@ -254,6 +254,8 @@ function Preparation() {
   fi
   CoreUrl="https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Core/Core.sh"
   wget --no-check-certificate -qO ./Core.sh ${CoreUrl} && chmod a+x ./Core.sh
+  #Remove some grub-installer configurations, or the grub installation will fail. 
+  sed -i '/force-efi-extra-removable/d' ./Core.sh
   CopyRight
   echo -e "\n"
   echo "Now you should input some parameters"
@@ -264,20 +266,14 @@ function Preparation() {
   if [[ "$ChosenDist" == '' ]] || [[ "$ChosenDist" == 'd' ]] || [[ "$ChosenDist" == 'debian' ]] ; then 
      ChosenDist='-d'
 	 MirrorFinal="${DebianMirror}"
-	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
-	 sed -i '/force-efi-extra-removable/d' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
 	 MirrorFinal="${UbuntuMirror}"
-	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
-	 sed -i '/force-efi-extra-removable/d' ./Core.sh
      	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
 	 MirrorFinal="${CentosMirror}"
-	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
-	 sed -i '/force-efi-extra-removable/d' ./Core.sh
 	 echo -e "Selected distribution is centos."
   else
      echo -e "Unrecognized parameter, this program will exit now"
@@ -433,7 +429,7 @@ nameserver 8.8.4.4
 EOF
   fi 
   
-  	UserParameter="${ChosenFirmware} ${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall}  ${ChosenPasswd} ${MirrorFinal}"
+  UserParameter="${ChosenFirmware} ${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall}  ${ChosenPasswd} ${MirrorFinal}"
   
 }
 
