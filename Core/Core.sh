@@ -326,7 +326,7 @@ if [[ "$SpikCheckDIST" == '0' ]]; then
 fi
 
 [[ "$ddMode" == '1' ]] && {
-  export SSL_SUPPORT='https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Tools/wget_udeb_amd64.tar.gz';
+  export SSL_SUPPORT='https://moeclub.org/get/wget_udeb_amd64';
   if [[ -n "$tmpURL" ]]; then
     DDURL="$tmpURL"
     echo "$DDURL" |grep -q '^http://\|^ftp://\|^https://';
@@ -719,7 +719,7 @@ popularity-contest popularity-contest/participate boolean false
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string default
-#d-i grub-installer/force-efi-extra-removable boolean true
+d-i grub-installer/force-efi-extra-removable boolean true
 d-i finish-install/reboot_in_progress note
 d-i debian-installer/exit/reboot boolean true
 d-i preseed/late_command string	\
