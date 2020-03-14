@@ -25,14 +25,18 @@ function CopyRight() {
 
 
 function CheckDependency(){
-	echo -e "The dependencies will be installed now."
+	echo -e "Next, the dependencies will be installed."
 	source /etc/os-release
-	if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
-		apt-get update
-		apt-get install -y xz-utils openssl gawk file net-tools curl wget
+   if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
+	echo -e "For debian and ubuntu, the following dependencies will be installed.\nxz-utils openssl gawk file net-tools curl wget"
+	read -s -n1 -p "Press any key to continue..." 
+	apt-get update
+	apt-get install -y xz-utils openssl gawk file net-tools curl wget
     elif [[ "${ID}" == "centos" ]];then
-		yum update
-        yum install -y xz coreutils openssl gawk file net-tools curl wget
+    	echo -e "For centos, the following dependencies will be installed.\ncoreutils openssl gawk file net-tools curl wget"
+	read -s -n1 -p "Press any key to continue..." 
+	yum update
+        yum install -y coreutils openssl gawk file net-tools curl wget
     else
         echo -e "Special OS, You should install the dependency mannually."
     fi
@@ -260,16 +264,20 @@ function Preparation() {
   if [[ "$ChosenDist" == '' ]] || [[ "$ChosenDist" == 'd' ]] || [[ "$ChosenDist" == 'debian' ]] ; then 
      ChosenDist='-d'
 	 MirrorFinal="${DebianMirror}"
+	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
+	 sed -i '/force-efi-extra-removable/d' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
 	 MirrorFinal="${UbuntuMirror}"
 	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
 	 sed -i '/force-efi-extra-removable/d' ./Core.sh
-     echo -e "Selected distribution is ubuntu."
+     	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
 	 MirrorFinal="${CentosMirror}"
+	 #Remove some grub-installer configurations for ubuntu, or the grub installation will fail. 
+	 sed -i '/force-efi-extra-removable/d' ./Core.sh
 	 echo -e "Selected distribution is centos."
   else
      echo -e "Unrecognized parameter, this program will exit now"
