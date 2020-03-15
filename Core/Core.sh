@@ -659,8 +659,6 @@ d-i mirror/http/hostname string $MirrorHost
 d-i mirror/http/directory string $MirrorFolder
 d-i mirror/http/proxy string
 
-d-i apt-setup/non-free boolean true
-d-i apt-setup/contrib boolean true
 d-i apt-setup/services-select multiselect security, updates
 
 d-i passwd/root-login boolean ture
