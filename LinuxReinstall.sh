@@ -275,6 +275,10 @@ function Preparation() {
 	 MirrorFinal="${DebianMirror}"
 	 #define the security updates mirror
 	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/a\d\-i apt\-setup\/security\_host string security\.debian\.org' ./Core.sh
+	 #enable all offical sources：non-free contrib and backports
+	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/i\d\-i apt\-setup\/contrib boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/contrib boolean true/i\d\-i apt\-setup\/non-free boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/contrib boolean true/a\d\-i apt\-setup\/backports boolean true' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
@@ -282,7 +286,11 @@ function Preparation() {
 	 #define the security updates mirror
 	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/a\d\-i apt-setup\/security\_host string security\.ubuntu\.com' ./Core.sh
 	 sed -i '/d\-i apt-setup\/security\_host string security\.ubuntu\.com/a\d\-i apt\-setup\/security\_path string \/ubuntu' ./Core.sh
-     	 echo -e "Selected distribution is ubuntu."
+     	 #enable all offical sources:universe restricted and backports
+	  sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/i\d\-i apt\-setup\/universe boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/universe boolean true/i\d\-i apt\-setup\/restricted boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/universe boolean true/a\d\-i apt\-setup\/backports boolean true' ./Core.sh
+	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
 	 MirrorFinal="${CentosMirror}"
