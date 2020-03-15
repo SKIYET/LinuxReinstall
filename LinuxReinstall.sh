@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.06                                      #"
+  echo "#  Version : 1.07                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
@@ -276,6 +276,7 @@ function Preparation() {
 	 #define the security updates mirror
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/a\d\-i apt\-setup\/security\_host string security\.debian\.org' ./Core.sh
 	 #enable all offical sources：non-free contrib and backports
+	 #The backports on debian should be select in multiselect option
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/contrib boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/contrib boolean true/i\d\-i apt\-setup\/non-free boolean true' ./Core.sh
 	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates\, backports/' ./Core.sh
@@ -287,10 +288,11 @@ function Preparation() {
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/a\d\-i apt-setup\/security\_host string security\.ubuntu\.com' ./Core.sh
 	 sed -i '/d\-i apt-setup\/security\_host string security\.ubuntu\.com/a\d\-i apt\-setup\/security\_path string \/ubuntu' ./Core.sh
      	 #enable all offical sources:universe restricted and backports
+	 #The backports on debian should be configured as universe
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/universe boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/i\d\-i apt\-setup\/restricted boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/a\d\-i apt\-setup\/backports boolean true' ./Core.sh
-	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates/' ./Core.sh
+	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates/'  ./Core.sh
 	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
