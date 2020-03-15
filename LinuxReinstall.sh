@@ -28,12 +28,12 @@ function CheckDependency(){
 	echo -e "\nPlease note some dependencies are necessary.\n"
 	source /etc/os-release
    if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
-	echo -e "For debian and ubuntu, the following dependencies will be installed.\nxz-utils openssl gawk file net-tools curl wget\n"
+	echo -e "For debian and ubuntu, the following dependencies will be installed.\n\nxz-utils openssl gawk file net-tools curl wget\n"
 	read -s -n1 -p "Press any key to continue..." 
 	apt-get update
 	apt-get install -y xz-utils openssl gawk file net-tools curl wget
     elif [[ "${ID}" == "centos" ]];then
-    	echo -e "For centos, the following dependencies will be installed.\ncoreutils openssl gawk file net-tools curl wget\n"
+    	echo -e "For centos, the following dependencies will be installed.\n\ncoreutils openssl gawk file net-tools curl wget\n"
 	read -s -n1 -p "Press any key to continue..." 
 	yum update
         yum install -y coreutils openssl gawk file net-tools curl wget
