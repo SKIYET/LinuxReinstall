@@ -25,7 +25,7 @@ function CopyRight() {
 
 
 function CheckDependency(){
-	echo -e "Please note the dependencies are necessary."
+	echo -e "Please note some dependencies are necessary."
 	source /etc/os-release
    if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
 	echo -e "For debian and ubuntu, the following dependencies will be installed.\nxz-utils openssl gawk file net-tools curl wget"
