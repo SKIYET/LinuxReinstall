@@ -176,7 +176,7 @@ function IPv6Mode(){
 	  echo -e "\nIP: $IPV6ADDR\n"
 	  read -r -p "Is IPv6 address correct(except netmask) ? [y/n]: " IPv6ADDRCORR
 	  if [[ "$IPv6ADDRCORR" == "n" ]]; then 
-	  echo -e "\nNow list IPv6 address configuration\n"
+	  echo -e "\nNow let's list IPv6 address configuration\n"
 	  ip -6 addr show
 	  echo -e "\n"
 	  read -r -p "Please input IPv6 address (Do NOT input any part of netmask) : " IPV6ADDR
@@ -185,7 +185,7 @@ function IPv6Mode(){
 	  echo -e "\nGateway : $IPV6GATE\n"
 	  read -r -p "Is IPv6 gateway correct ? [y/n]: " IPv6GATECORR
 	  if [[ "$IPv6GATECORR" == "n" ]]; then 
-	  echo -e "\nNow list IPv6 route configuration\n"
+	  echo -e "\nNow let's list IPv6 route configuration\n"
 	  #route -6 -n
 	  ip -6 route show
 	  echo -e "\n"
