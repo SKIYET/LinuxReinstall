@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.05                           #"
+  echo "#  Version : 1.06                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
@@ -278,7 +278,7 @@ function Preparation() {
 	 #enable all offical sources：non-free contrib and backports
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/contrib boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/contrib boolean true/i\d\-i apt\-setup\/non-free boolean true' ./Core.sh
-	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates\, backports/'
+	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates\, backports/' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
@@ -290,7 +290,7 @@ function Preparation() {
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/universe boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/i\d\-i apt\-setup\/restricted boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/a\d\-i apt\-setup\/backports boolean true' ./Core.sh
-	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates/'
+	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates/' ./Core.sh
 	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
