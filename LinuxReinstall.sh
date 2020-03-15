@@ -33,6 +33,7 @@ function CheckDependency(){
 	echo -e "\nxz-utils openssl gawk file net-tools curl wget\n"
 	echo -e "\n"
 	read -s -n1 -p "Press any key to continue..." 
+	clear
 	apt-get update
 	apt-get install -y xz-utils openssl gawk file net-tools curl wget
     elif [[ "${ID}" == "centos" ]];then
@@ -40,6 +41,7 @@ function CheckDependency(){
 	echo -e "\ncoreutils openssl gawk file net-tools curl wget\n"
 	echo -e "\n"
 	read -s -n1 -p "Press any key to continue..." 
+	clear
 	yum update
         yum install -y coreutils openssl gawk file net-tools curl wget
     else
