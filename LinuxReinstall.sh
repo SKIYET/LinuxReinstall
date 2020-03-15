@@ -410,7 +410,6 @@ function Preparation() {
   elif [[ "$ChosenLowMemMode" == 'y' ]] || [[ "$ChosenLowMemMode" == 'yes' ]]; then 
 	 ChosenLowMemMode='y'
 	 echo "The installation will work in low memory mode"
-	 echo "The installation will work in low memory mode"
      	#low memory mode
 	 sed -i '/d\-i debian\-installer\/locale string en_US/i\d\-i lowmem\/low note' ./Core.sh
 	 sed -i '/d\-i lowmem\/low note/i\d\-i lowmem\/insufficient error' ./Core.sh
