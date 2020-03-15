@@ -25,7 +25,7 @@ function CopyRight() {
 
 
 function CheckDependency(){
-	echo -e "Next, the dependencies will be installed."
+	echo -e "Please note the dependencies are necessary."
 	source /etc/os-release
    if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
 	echo -e "For debian and ubuntu, the following dependencies will be installed.\nxz-utils openssl gawk file net-tools curl wget"
@@ -173,7 +173,7 @@ function IPv6Mode(){
 	  echo "The IPv6 configuration will be adopted in the installation."
   elif [[ "$IPv6CORR" == "n" ]] || [[ "$IPv6CORR" == "no" ]]; then 	
 	  echo -e "\nLet's check the configuration step by step. You may update the configure manually.\n"
-	  echo "IP: $IPV6ADDR"
+	  echo -e "\nIP: $IPV6ADDR\n"
 	  read -r -p "Is IPv6 address correct(except netmask) ? [y/n]: " IPv6ADDRCORR
 	  if [[ "$IPv6ADDRCORR" == "n" ]]; then 
 	  echo -e "\nNow list IPv6 address configuration\n"
@@ -182,7 +182,7 @@ function IPv6Mode(){
 	  read -r -p "Please input IPv6 address (Do NOT input any part of netmask) : " IPV6ADDR
 	  echo -e "New IPv6 Address : ${IPV6ADDR}\n"
 	  fi
-	  echo -e "\n"
+	  echo -e "\nGateway : $IPV6GATE\n"
 	  read -r -p "Is IPv6 gateway correct ? [y/n]: " IPv6GATECORR
 	  if [[ "$IPv6GATECORR" == "n" ]]; then 
 	  echo -e "\nNow list IPv6 route configuration\n"
@@ -192,7 +192,7 @@ function IPv6Mode(){
 	  read -r -p "Please input IPv6 Gateway : " IPV6GATE
 	  echo -e "New IPv6 Gateway : ${IPV6GATE}\n"
 	  fi
-	  echo -e "\n"
+	  echo -e "\nNetmask : $IPV6MASK\n"
       read -r -p "Is IPv6 subnet mask correct ? [y/n]: " IPv6MASKCORR
 	  if [[ "$IPv6MASKCORR" == "n" ]]; then 
 	  read -r -p "Please input the IPv6 subnet mask, such as 48, 64 and 96. Proper format will be generated : " IPV6MASK
