@@ -413,8 +413,8 @@ function Preparation() {
 	 echo "The installation will work in low memory mode"
      	#low memory mode
 	 sed -i '/d\-i debian\-installer\/locale string en_US/i\d\-i lowmem\/low note' ./Core.sh
-	 sed -i '/d\-i lowmem\/low note/i\d\-i	lowmem\/insufficient	error' ./Core.sh
-	 sed -i '/d\-i lowmem\/low note/a\d\-i	anna\/choose\_modules\_lowmem	multiselect' ./Core.sh	 
+	 sed -i '/d\-i lowmem\/low note/i\d\-i lowmem\/insufficient error' ./Core.sh
+	 sed -i '/d\-i lowmem\/low note/a\d\-i anna\/choose\_modules\_lowmem multiselect' ./Core.sh	 
 	 #Some configurations must be reconfigured respectively.
     	 sed -i '/d\-i debian\-installer\/locale string en_US/a\d\-i debian\-installer\/country string US' ./Core.sh
 	 sed -i '/d\-i debian\-installer\/country string US/a\d\-i debian-installer\/language string en' ./Core.sh
