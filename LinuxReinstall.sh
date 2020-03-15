@@ -25,7 +25,7 @@ function CopyRight() {
 
 
 function CheckDependency(){
-	clear
+        clear
 	echo -e "\nPlease note some dependencies are necessary.\n"
 	source /etc/os-release
    if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
