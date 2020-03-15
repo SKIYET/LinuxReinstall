@@ -273,10 +273,15 @@ function Preparation() {
   if [[ "$ChosenDist" == '' ]] || [[ "$ChosenDist" == 'd' ]] || [[ "$ChosenDist" == 'debian' ]] ; then 
      ChosenDist='-d'
 	 MirrorFinal="${DebianMirror}"
+	 #define the security updates mirror
+	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/a\d\-i apt\-setup\/security\_host string security\.debian\.org' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
 	 MirrorFinal="${UbuntuMirror}"
+	 #define the security updates mirror
+	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/a\d\-i apt-setup\/security\_host string security\.ubuntu\.com' ./Core.sh
+	 sed -i '/d\-i apt-setup\/security\_host string security\.ubuntu\.com/a\d\-i apt\-setup\/security\_path string \/ubuntu' ./Core.sh
      	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
      ChosenDist='-c'
