@@ -280,7 +280,7 @@ function Preparation() {
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/contrib boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/contrib boolean true/i\d\-i apt\-setup\/non-free boolean true' ./Core.sh
 	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates\, backports/' ./Core.sh
-	 sed -i 's/d\-i apt\-setup\/services-select multiselect security\, updates\, backports/i\d\-i apt\-setup\/source boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates\, backports/i\d\-i apt\-setup\/source boolean true' ./Core.sh
 	 echo -e "Selected distribution is debian."
   elif [[ "$ChosenDist" == 'u' ]] || [[ "$ChosenDist" == 'ubuntu' ]]; then 
      ChosenDist='-u'
