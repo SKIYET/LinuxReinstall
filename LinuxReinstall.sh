@@ -287,7 +287,7 @@ function Preparation() {
 	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/a\d\-i apt-setup\/security\_host string security\.ubuntu\.com' ./Core.sh
 	 sed -i '/d\-i apt-setup\/security\_host string security\.ubuntu\.com/a\d\-i apt\-setup\/security\_path string \/ubuntu' ./Core.sh
      	 #enable all offical sources:universe restricted and backports
-	  sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/i\d\-i apt\-setup\/universe boolean true' ./Core.sh
+	 sed -i '/d\-i apt\-setup\/services-select multiselect security\, updates/i\d\-i apt\-setup\/universe boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/i\d\-i apt\-setup\/restricted boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/universe boolean true/a\d\-i apt\-setup\/backports boolean true' ./Core.sh
 	 echo -e "Selected distribution is ubuntu."
