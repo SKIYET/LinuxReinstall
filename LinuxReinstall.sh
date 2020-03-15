@@ -29,7 +29,7 @@ function CheckDependency(){
 	echo -e "\nPlease note some dependencies are necessary.\n"
 	source /etc/os-release
    if [[ "${ID}" == "debian" ]] || [[ "${ID}" == "ubuntu" ]]; then
-   	echo -e "For debian and ubuntu, the following dependencies will be installed.\n"
+   	echo -e "For debian or ubuntu, the following dependencies will be installed.\n"
 	echo -e "\nxz-utils openssl gawk file net-tools curl wget\n"
 	echo -e "\n"
 	read -s -n1 -p "Press any key to continue..." 
