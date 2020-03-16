@@ -366,7 +366,7 @@ function Preparation() {
   
   echo -e "\n"
   echo -e "Does your server work with a IPv6-Only internet?"
-  read -r -p "Please input y(yes) or n(no) , Press ENTER to skip (default : n) : " ChosenIPV6
+  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenIPV6
   ChosenIPV6=$(echo ${ChosenIPV6}|tr [A-Z] [a-z])
   if [[ "$ChosenIPV6" == '' ]] || [[ "$ChosenIPV6" == 'n' ]] || [[ "$ChosenIPV6" == 'no' ]] ; then 
 	 ChosenIPV6='n'
@@ -474,11 +474,11 @@ function Reinstall() {
       echo "IPv6 Netmask: $IPV6MASK"
   fi
    
-  if [[ "$ChosenVersion" == '7.6' ]] && [[ "$ChosenDist" == '-c ' ]];then
+  if [[ "$ChosenVersion" == '7.6' ]] && [[ "$ChosenDist" == '-c' ]];then
      echo -e "\nPassword: Pwd@CentOS\n"
 	 read -s -n1 -p "Press any key to continue..." 
 	 bash ./Core.sh $NETSTAT -dd 'https://api.moetools.net/get/centos-76-image' $DebianMirror 
-  elif [[ "$ChosenVersion" == '7.7' ]] && [[ "$ChosenDist" == '-c ' ]];then
+  elif [[ "$ChosenVersion" == '7.7' ]] && [[ "$ChosenDist" == '-c' ]];then
      echo -e "\nPassword: Pwd@CentOS\n"
 	 read -s -n1 -p "Press any key to continue..." 
 	 bash ./Core.sh $NETSTAT -dd 'https://api.moetools.net/get/centos-7-image' $DebianMirror 
