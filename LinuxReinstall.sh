@@ -314,130 +314,133 @@ function Preparation() {
   VerDefaultCen='6.9 '
   if [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-d' ]]; then 
 	 ChosenVersion="${VerDefaultDeb} "
-  elif [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-u' ]];then
+  elif [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-u' ]]; then
 	 ChosenVersion="${VerDefaultUbu} "
-  elif [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-c' ]];then
+  elif [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-c' ]]; then
 	 ChosenVersion="${VerDefaultCen} "
   else 
      ChosenVersion="${ChosenVersion}"
   fi
   echo -e "Selected version number is ${ChosenVersion}"
   
-  echo -e "\n"
-  echo "Please note your server will have only one patition with the entire disk if you select debian/ubuntu."
-  echo "Please input a filesystem you want, such as ext4 and xfs. This option is valid only when you choose debian/ubuntu."
-  read -r -p "Input file system you want here , Press ENTER to skip (default : ext4) : " ChosenFS
-  ChosenFS=$(echo ${ChosenFS}|tr [A-Z] [a-z])
-  FSDefault='ext4' 
-  if [[ "$ChosenFS" == '' ]] ; then 
-	 ChosenFS=${FSDefault}
-  fi
-  sed -i "s@TargetFS@${ChosenFS}@" ./Core.sh
-  echo -e "Selected file system is ${ChosenFS}"
+  #If the selected version number is not equal to 7.6/7.7, which is only for centos, the following options will be valid.
+  if [[ "$ChosenVersion" != '7.6' ]] && [[ "$ChosenVersion" != '7.7' ]] && [[ "$ChosenDist" != '-c' ]]; then
   
-  echo -e "\n"
-  read -r -p "Please input ssh port you want , Press ENTER to skip (default : 22) : " ChosenSSH
-  SSHDefault='22'
-  if [[ "$ChosenSSH" == '' ]] ; then
-	 ChosenSSH=${SSHDefault}
-  fi
-  sed -i "s@TargetSSH@${ChosenSSH}@" ./Core.sh
-  echo -e "Selected ssh port is ${ChosenSSH}"
+    echo -e "\n"
+    echo "Please note your server will have only one patition with the entire disk if you select debian/ubuntu."
+    echo "Please input a filesystem you want, such as ext4 and xfs. This option is valid only when you choose debian/ubuntu."
+    read -r -p "Input file system you want here , Press ENTER to skip (default : ext4) : " ChosenFS
+    ChosenFS=$(echo ${ChosenFS}|tr [A-Z] [a-z])
+    FSDefault='ext4' 
+    if [[ "$ChosenFS" == '' ]] ; then 
+	   ChosenFS=${FSDefault}
+    fi
+    sed -i "s@TargetFS@${ChosenFS}@" ./Core.sh
+    echo -e "Selected file system is ${ChosenFS}"
+  
+    echo -e "\n"
+    read -r -p "Please input ssh port you want , Press ENTER to skip (default : 22) : " ChosenSSH
+    SSHDefault='22'
+    if [[ "$ChosenSSH" == '' ]] ; then
+	   ChosenSSH=${SSHDefault}
+    fi
+    sed -i "s@TargetSSH@${ChosenSSH}@" ./Core.sh
+    echo -e "Selected ssh port is ${ChosenSSH}"
     
-  echo -e "\n"
-  echo -e "Please input a custom password for your server. What you input is case-sensitive "
-  read -r -p "Please input ssh password you want , Press ENTER to skip (default : ILoveChina!) : " ChosenPasswd
-  PasswdDefault='ILoveChina!'
-  if [[ "$ChosenPasswd" == '' ]] ; then 
-	 ChosenPasswd=${PasswdDefault}
-  fi
-  echo -e "Passwd you want is ${ChosenPasswd}"
-  ChosenPasswd="-p ${ChosenPasswd}"
+    echo -e "\n"
+    echo -e "Please input a custom password for your server. What you input is case-sensitive "
+    read -r -p "Please input ssh password you want , Press ENTER to skip (default : ILoveChina!) : " ChosenPasswd
+    PasswdDefault='ILoveChina!'
+    if [[ "$ChosenPasswd" == '' ]] ; then 
+	   ChosenPasswd=${PasswdDefault}
+    fi
+    echo -e "Passwd you want is ${ChosenPasswd}"
+    ChosenPasswd="-p ${ChosenPasswd}"
 
   
-  echo -e "\n"
-  read -r -p "Please input time zone you want , Press ENTER to skip (default : Asia/Hong_Kong) : " ChosenTimeZone
-  TimeZoneDefault='Asia/Hong_Kong'
-  if [[ "$ChosenTimeZone" == '' ]] ; then 
-	 ChosenTimeZone=${TimeZoneDefault}
-  fi
-  sed -i "s@TargetTimeZone@${ChosenTimeZone}@" ./Core.sh
-  echo -e "Selected TimeZone is ${ChosenTimeZone}"
+    echo -e "\n"
+    read -r -p "Please input time zone you want , Press ENTER to skip (default : Asia/Hong_Kong) : " ChosenTimeZone
+    TimeZoneDefault='Asia/Hong_Kong'
+    if [[ "$ChosenTimeZone" == '' ]] ; then 
+	   ChosenTimeZone=${TimeZoneDefault}
+    fi
+    sed -i "s@TargetTimeZone@${ChosenTimeZone}@" ./Core.sh
+    echo -e "Selected TimeZone is ${ChosenTimeZone}"
   
-  echo -e "\n"
-  echo -e "Does your server work with a IPv6-Only internet?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenIPV6
-  ChosenIPV6=$(echo ${ChosenIPV6}|tr [A-Z] [a-z])
-  if [[ "$ChosenIPV6" == '' ]] || [[ "$ChosenIPV6" == 'n' ]] || [[ "$ChosenIPV6" == 'no' ]] ; then 
-	 ChosenIPV6='n'
-	 ChosenNS="8.8.8.8"
-	 echo "We will work in ipv4 mode"
-	 sed -i "s@TargetNS@${ChosenNS}@" ./Core.sh
-  elif [[ "$ChosenIPV6" == 'y' ]] || [[ "$ChosenIPV6" == 'yes' ]]; then 
+    echo -e "\n"
+    echo -e "Does your server work with a IPv6-Only internet?"
+    read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenIPV6
+    ChosenIPV6=$(echo ${ChosenIPV6}|tr [A-Z] [a-z])
+    if [[ "$ChosenIPV6" == '' ]] || [[ "$ChosenIPV6" == 'n' ]] || [[ "$ChosenIPV6" == 'no' ]] ; then 
+	   ChosenIPV6='n'
+	   ChosenNS="8.8.8.8"
+	   echo "We will work in ipv4 mode"
+	   sed -i "s@TargetNS@${ChosenNS}@" ./Core.sh
+    elif [[ "$ChosenIPV6" == 'y' ]] || [[ "$ChosenIPV6" == 'yes' ]]; then 
   	 ChosenIPV6='y'
 	 ChosenNS="2001:4860:4860::8888"
 	 echo "We will work in ipv6 mode (testing)"
 	 sed -i "s@TargetNS@${ChosenNS}@" ./Core.sh
-  fi
+    fi
 
-  echo -e "\n"
-  echo -e "Do you want a 64bit system?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenX64
-  ChosenX64=$(echo ${ChosenX64}|tr [A-Z] [a-z])
-  if [[ "$ChosenX64" == '' ]] || [[ "$ChosenX64" == 'y' ]] || [[ "$ChosenX64" == 'yes' ]] ; then 
-	 ChosenX64='-v 64'
-	 echo "You select a 64bit linux."
-  elif [[ "$ChosenX64" == 'n' ]] || [[ "$ChosenX64" == 'no' ]]; then 
+    echo -e "\n"
+    echo -e "Do you want a 64bit system?"
+    read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenX64
+    ChosenX64=$(echo ${ChosenX64}|tr [A-Z] [a-z])
+    if [[ "$ChosenX64" == '' ]] || [[ "$ChosenX64" == 'y' ]] || [[ "$ChosenX64" == 'yes' ]] ; then 
+	   ChosenX64='-v 64'
+	   echo "You select a 64bit linux."
+    elif [[ "$ChosenX64" == 'n' ]] || [[ "$ChosenX64" == 'no' ]]; then 
 	 ChosenX64='-v 32'
 	 echo "You select a 32bit linux."
-  fi
+    fi
   
-  echo -e "\n"
-  echo -e "Do you want to install the extra firmware?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenFirmware
-  ChosenFirmware=$(echo ${ChoChosenFirmware}|tr [A-Z] [a-z])
-  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]] ; then  
-	 ChosenFirmware=''
-	 echo "Extra firmware is not selected."
-  elif [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]]; then 
-	 ChosenFirmware='-firmware'
-	 echo "Extra firmware will be installed."
-  fi
+    echo -e "\n"
+    echo -e "Do you want to install the extra firmware?"
+    read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenFirmware
+    ChosenFirmware=$(echo ${ChoChosenFirmware}|tr [A-Z] [a-z])
+    if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]] ; then  
+	   ChosenFirmware=''
+	   echo "Extra firmware is not selected."
+    elif [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]]; then 
+	   ChosenFirmware='-firmware'
+	   echo "Extra firmware will be installed."
+    fi
   
-  echo -e "\n"
-  echo -e "Do you want install the linux automatically?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenAutoInstall
-  ChosenAutoInstall=$(echo ${ChosenAutoInstall}|tr [A-Z] [a-z])
-  if [[ "$ChosenAutoInstall" == '' ]] || [[ "$ChosenAutoInstall" == 'y' ]] || [[ "$ChosenAutoInstall" == 'yes' ]] ; then 
-	 ChosenAutoInstall='-a'
-	 echo "The installation will work in auto mode"
-  elif [[ "$ChosenAutoInstall" == 'n' ]] || [[ "$ChosenAutoInstall" == 'no' ]]; then 
-	 ChosenAutoInstall='-m'
-	 echo "You should complete the installation with vnc"
-  fi
+    echo -e "\n"
+    echo -e "Do you want install the linux automatically?"
+    read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenAutoInstall
+    ChosenAutoInstall=$(echo ${ChosenAutoInstall}|tr [A-Z] [a-z])
+    if [[ "$ChosenAutoInstall" == '' ]] || [[ "$ChosenAutoInstall" == 'y' ]] || [[ "$ChosenAutoInstall" == 'yes' ]] ; then 
+	   ChosenAutoInstall='-a'
+	   echo "The installation will work in auto mode"
+    elif [[ "$ChosenAutoInstall" == 'n' ]] || [[ "$ChosenAutoInstall" == 'no' ]]; then 
+	   ChosenAutoInstall='-m'
+	   echo "You should complete the installation with vnc"
+    fi
   
-  echo -e "\n"
-  echo -e "If your memory is 512M or lower, The low memory mode should be enabled."
-  echo -e "This option is valid only when you choose debian or ubuntu."
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenLowMemMode
-  ChosenLowMemMode=$(echo ${ChosenLowMemMode}|tr [A-Z] [a-z])
-  if [[ "$ChosenLowMemMode" == '' ]] || [[ "$ChosenLowMemMode" == 'n' ]] || [[ "$ChosenLowMemMode" == 'no' ]] ; then 
-	 ChosenLowMemMode='n' 
-  elif [[ "$ChosenLowMemMode" == 'y' ]] || [[ "$ChosenLowMemMode" == 'yes' ]]; then 
-	 ChosenLowMemMode='y'
-	 echo "The installation will work in low memory mode"
-     	#low memory mode
-	 sed -i '/d\-i debian\-installer\/locale string en_US/i\d\-i lowmem\/low note' ./Core.sh
-	 sed -i '/d\-i lowmem\/low note/i\d\-i lowmem\/insufficient error' ./Core.sh
-	 sed -i '/d\-i lowmem\/low note/a\d\-i anna\/choose\_modules\_lowmem multiselect' ./Core.sh	 
+    echo -e "\n"
+    echo -e "If your memory is 512M or lower, The low memory mode should be enabled."
+    echo -e "This option is valid only when you choose debian or ubuntu."
+    read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenLowMemMode
+    ChosenLowMemMode=$(echo ${ChosenLowMemMode}|tr [A-Z] [a-z])
+    if [[ "$ChosenLowMemMode" == '' ]] || [[ "$ChosenLowMemMode" == 'n' ]] || [[ "$ChosenLowMemMode" == 'no' ]] ; then 
+	   ChosenLowMemMode='n' 
+    elif [[ "$ChosenLowMemMode" == 'y' ]] || [[ "$ChosenLowMemMode" == 'yes' ]]; then 
+	   ChosenLowMemMode='y'
+	   echo "The installation will work in low memory mode"
+     	   #low memory mode
+	   sed -i '/d\-i debian\-installer\/locale string en_US/i\d\-i lowmem\/low note' ./Core.sh
+	   sed -i '/d\-i lowmem\/low note/i\d\-i lowmem\/insufficient error' ./Core.sh
+	   sed -i '/d\-i lowmem\/low note/a\d\-i anna\/choose\_modules\_lowmem multiselect' ./Core.sh	 
 	 #Some configurations must be reconfigured respectively.
-    	 sed -i '/d\-i debian\-installer\/locale string en_US/a\d\-i debian\-installer\/country string US' ./Core.sh
-	 sed -i '/d\-i debian\-installer\/country string US/a\d\-i debian-installer\/language string en' ./Core.sh
-	 sed -i '/d\-i debian-installer\/language string en/a\d\-i debian-installer\/locale string en\_GB\.UTF\-8' ./Core.sh
+    	   sed -i '/d\-i debian\-installer\/locale string en_US/a\d\-i debian\-installer\/country string US' ./Core.sh
+	   sed -i '/d\-i debian\-installer\/country string US/a\d\-i debian-installer\/language string en' ./Core.sh
+	   sed -i '/d\-i debian-installer\/language string en/a\d\-i debian-installer\/locale string en\_GB\.UTF\-8' ./Core.sh
                                                     	 
-  fi
+    fi
   
-  
+  fi  #this fi is for the if which is used to guess whether the selected os is centos 7.6/7.7 or not.
   echo -e "\n"
   echo -e "Do you want to use google IPv4/6 dns nameserver?"
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenGoogleNS
