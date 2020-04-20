@@ -326,7 +326,7 @@ if [[ "$SpikCheckDIST" == '0' ]]; then
 fi
 
 [[ "$ddMode" == '1' ]] && {
-  export SSL_SUPPORT='https://moeclub.org/get/wget_udeb_amd64';
+  export SSL_SUPPORT='https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Tools/wget_udeb_amd64.tar.gz';
   if [[ -n "$tmpURL" ]]; then
     DDURL="$tmpURL"
     echo "$DDURL" |grep -q '^http://\|^ftp://\|^https://';
@@ -668,7 +668,7 @@ d-i user-setup/allow-password-weak boolean true
 d-i user-setup/encrypt-home boolean false
 
 d-i clock-setup/utc boolean true
-d-i time/zone string TargetTimeZone
+d-i time/zone string Asia/Hong_Kong
 d-i clock-setup/ntp boolean true
 
 d-i preseed/early_command string anna-install libfuse2-udeb fuse-udeb ntfs-3g-udeb fuse-modules-${vKernel_udeb}-amd64-di
@@ -727,7 +727,14 @@ d-i preseed/late_command string	\
 sed -i 's/^#Port 22/Port TargetSSH/g' /target/etc/ssh/sshd_config; \
 sed -i 's/^Port 22/Port TargetSSH/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_config; \
-sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config;
+sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config; \
+sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
+sed -ri 's/^#?PubkeyAuthentication.*/PubkeyAuthentication yes/g' /target/etc/ssh/sshd_config; \
+sed -ri '/^#?AuthorizedKeysFile.*/a\AuthorizedKeysFile     \.ssh\/authorized\_keys .ssh\/authorized\_keys2' /target/etc/ssh/sshd_config \
+in-target mkdir -p /root/.ssh/ ; \
+in-target chmod 700 /root/.ssh/ ; \
+in-target /bin/sh -c 'echo "TargetPUBKEY" >> /root/.ssh/authorized_keys' ; \
+in-target chmod 600 /root/.ssh/authorized_keys ; 
 EOF
 
 [[ "$loaderMode" != "0" ]] && AutoNet='1'
