@@ -345,7 +345,7 @@ function Preparation() {
 		    echo -e "Empty input, this program will exit now"
 			exit 1
 		fi
-		echo -e "Public key you input is ${ChosenPUBKEY}"
+		echo -e 'Public key you input is "${ChosenPUBKEY}"'
 		ChosenPasswd=""
 		sed -i '/PasswordAuthentication yes/d' ./Core.sh
 		sed -i "s@TargetPUBKEY@${ChosenPUBKEY}@" ./Core.sh
