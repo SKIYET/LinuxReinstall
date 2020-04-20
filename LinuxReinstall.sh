@@ -276,7 +276,7 @@ function Preparation() {
 	 MirrorFinal="${DebianMirror}"
 	 #define the security updates mirror
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/a\d\-i apt\-setup\/security\_host string security\.debian\.org' ./Core.sh
-	 #enable all offical sources：non-free contrib and backports
+	 #enable all offical sourcesÃ¯Â¼Å¡non-free contrib and backports
 	 #The backports on debian should be select in multiselect option
 	 sed -i '/d\-i apt\-setup\/services-select multiselect/i\d\-i apt\-setup\/contrib boolean true' ./Core.sh
 	 sed -i '/d\-i apt\-setup\/contrib boolean true/i\d\-i apt\-setup\/non-free boolean true' ./Core.sh
@@ -334,6 +334,34 @@ function Preparation() {
   echo -e "Selected file system is ${ChosenFS}"
   
   echo -e "\n"
+  echo "Please select a login method. The valid options are public-private keys and password "
+  echo "Please confirm whether the public-private keys is adopted. If you input n(o), a passward will be asked."
+  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenSSHPUB
+  ChosenSSHPUB=$(echo ${ChosenSSHPUB}|tr [A-Z] [a-z])
+  if [[ "$ChosenSSHPUB" == '' ]] || [[ "$ChosenSSHPUB" == 'y' ]] || [[ "$ChosenSSHPUB" == 'yes' ]]; then
+		echo -e "\n"
+		read -r -p "Please input your public key. What you input is case-sensitive : " ChosenPUBKEY
+		ChosenPasswd=""
+		sed -i '/PasswordAuthentication yes/d' ./Core.sh
+		sed -i "s@TargetPUBKEY@${ChosenPUBKEY}@" ./Core.sh
+  elif [[ "$ChosenSSHPUB" == 'n' ]] || [[ "$ChosenSSHPUB" == 'no' ]] ; then
+		echo -e "\n"
+		echo -e "Please input a custom password for your server. What you input is case-sensitive "
+		read -r -p "Please input ssh password you want , Press ENTER to skip (default : ILoveChina!) : " ChosenPasswd
+		PasswdDefault='ILoveChina!'
+		if [[ "$ChosenPasswd" == '' ]] ; then 
+		ChosenPasswd=${PasswdDefault}
+		fi
+		echo -e "Passwd you want is ${ChosenPasswd}"
+		ChosenPasswd="-p ${ChosenPasswd}"
+		sed -i '/PasswordAuthentication no/d' ./Core.sh
+		sed -i '/PubkeyAuthentication yes/d' ./Core.sh
+		sed -i '/AuthorizedKeysFile/d' ./Core.sh
+		sed -i '/AuthorizedKeysFile/d' ./Core.sh
+		sed -i '/\/root\/\.ssh\//d' ./Core.sh
+		sed -i '/TargetPUBKEY/d' ./Core.sh
+  fi
+  echo -e "\n"
   read -r -p "Please input ssh port you want , Press ENTER to skip (default : 22) : " ChosenSSH
   SSHDefault='22'
   if [[ "$ChosenSSH" == '' ]] ; then
@@ -342,25 +370,6 @@ function Preparation() {
   sed -i "s@TargetSSH@${ChosenSSH}@" ./Core.sh
   echo -e "Selected ssh port is ${ChosenSSH}"
     
-  echo -e "\n"
-  echo -e "Please input a custom password for your server. What you input is case-sensitive "
-  read -r -p "Please input ssh password you want , Press ENTER to skip (default : ILoveChina!) : " ChosenPasswd
-  PasswdDefault='ILoveChina!'
-  if [[ "$ChosenPasswd" == '' ]] ; then 
-	 ChosenPasswd=${PasswdDefault}
-  fi
-  echo -e "Passwd you want is ${ChosenPasswd}"
-  ChosenPasswd="-p ${ChosenPasswd}"
-  
-  echo -e "\n"
-  read -r -p "Please input time zone you want , Press ENTER to skip (default : Asia/Hong_Kong) : " ChosenTimeZone
-  TimeZoneDefault='Asia/Hong_Kong'
-  if [[ "$ChosenTimeZone" == '' ]] ; then 
-	 ChosenTimeZone=${TimeZoneDefault}
-  fi
-  sed -i "s@TargetTimeZone@${ChosenTimeZone}@" ./Core.sh
-  echo -e "Selected TimeZone is ${ChosenTimeZone}"
-  
   echo -e "\n"
   echo -e "Does your server work with a IPv6-Only internet?"
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenIPV6
@@ -391,14 +400,14 @@ function Preparation() {
   
   echo -e "\n"
   echo -e "Do you want to install the extra firmware?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenFirmware
-  ChosenFirmware=$(echo ${ChoChosenFirmware}|tr [A-Z] [a-z])
-  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]] ; then  
-	 ChosenFirmware=''
+  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenFirmware
+  ChosenFirmware=$(echo ${ChosenFirmware}|tr [A-Z] [a-z])
+  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]] ; then  
+	 ChosenFirmware='-firmware'
+	 echo "Extra firmware will be installed."
+  elif [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]]; then 
+	   ChosenFirmware=''
 	 echo "Extra firmware is not selected."
-  elif [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]]; then 
-	   ChosenFirmware='-firmware'
-	   echo "Extra firmware will be installed."
   fi
   
   echo -e "\n"
@@ -437,20 +446,19 @@ function Preparation() {
   echo -e "Do you want to use google IPv4/6 dns nameserver?"
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenGoogleNS
   ChosenGoogleNS=$(echo ${ChosenGoogleNS}|tr [A-Z] [a-z])
-  if [[ "$ ChosenGoogleNS" == '' ]] || [[ "$ ChosenGoogleNS" == 'y' ]] || [[ "$ ChosenGoogleNS" == 'yes' ]] ; then 
+  if [[ "$ChosenGoogleNS" == '' ]] || [[ "$ChosenGoogleNS" == 'y' ]] || [[ "$ChosenGoogleNS" == 'yes' ]] ; then 
 rm -rf /etc/resolv.conf  
 cat <<EOF>/etc/resolv.conf 
-#IPv6 DNS-NameServer
-nameserver 2001:4860:4860::8888
-nameserver 2001:4860:4860::8844
-
 #IPv4 DNS-NameServer
 nameserver 8.8.8.8
 nameserver 8.8.4.4
+#IPv6 DNS-NameServer
+nameserver 2001:4860:4860::8888
+nameserver 2001:4860:4860::8844
 EOF
   fi 
   
-  UserParameter="${ChosenFirmware} ${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall}  ${ChosenPasswd} ${MirrorFinal}"
+  UserParameter="${ChosenFirmware} ${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall} ${ChosenPasswd} ${MirrorFinal}"
   
 }
 
@@ -487,4 +495,3 @@ else
       echo -e "No IPv4 or IPv6. Program will exit now "
 fi
 Reinstall
-
