@@ -730,11 +730,11 @@ sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_conf
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PubkeyAuthentication.*/PubkeyAuthentication yes/g' /target/etc/ssh/sshd_config; \
-sed -ri '/^#?AuthorizedKeysFile.*/a\AuthorizedKeysFile     \.ssh\/authorized\_keys .ssh\/authorized\_keys2' /target/etc/ssh/sshd_config \
-in-target mkdir -p /root/.ssh/ ; \
-in-target chmod 700 /root/.ssh/ ; \
-in-target /bin/sh -c 'echo "TargetPUBKEY" >> /root/.ssh/authorized_keys' ; \
-in-target chmod 600 /root/.ssh/authorized_keys ; 
+sed -ri '/^#?AuthorizedKeysFile.*/a\AuthorizedKeysFile     \.ssh\/authorized\_keys .ssh\/authorized\_keys2' /target/etc/ssh/sshd_config; \
+in-target mkdir -p /root/.ssh/; \
+in-target chmod 700 /root/.ssh/; \
+in-target /bin/sh -c 'echo "TargetPUBKEY" >> /root/.ssh/authorized_keys'; \
+in-target chmod 600 /root/.ssh/authorized_keys; 
 EOF
 
 [[ "$loaderMode" != "0" ]] && AutoNet='1'
