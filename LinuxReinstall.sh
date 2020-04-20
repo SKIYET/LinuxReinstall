@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.07                                      #"
+  echo "#  Version : 1.10                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
