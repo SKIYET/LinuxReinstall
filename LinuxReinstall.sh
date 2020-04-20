@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.11                                      #"
+  echo "#  Version : 1.12                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
@@ -345,7 +345,8 @@ function Preparation() {
 		    echo -e "Empty input, this program will exit now"
 			exit 1
 		fi
-		echo -e 'Public key you input is as follow.\n${ChosenPUBKEY}'
+		echo -e "Public key you input is as follow."
+		echo -e "${ChosenPUBKEY}"
 		ChosenPasswd=""
 		sed -i '/PasswordAuthentication yes/d' ./Core.sh
 		sed -i "s@TargetPUBKEY@${ChosenPUBKEY}@" ./Core.sh
