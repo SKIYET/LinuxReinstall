@@ -296,12 +296,12 @@ function Preparation() {
 	 sed -i 's/d\-i apt\-setup\/services-select multiselect/& security\, updates/'  ./Core.sh
 	 echo -e "Selected distribution is ubuntu."
   elif [[ "$ChosenDist" == 'c' ]] || [[ "$ChosenDist" == 'centos' ]]; then 
-     ChosenDist='-c'
+         ChosenDist='-c'
 	 MirrorFinal="${CentosMirror}"
 	 echo -e "Selected distribution is centos."
   else
-     echo -e "Unrecognized parameter, this program will exit now"
-	 exit 1
+         echo -e "Unrecognized parameter, this program will exit now"
+         exit 1
   fi
   
   echo -e "\n"
