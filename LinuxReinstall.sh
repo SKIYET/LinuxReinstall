@@ -497,3 +497,4 @@ else
       echo -e "\n"
       echo -e "No IPv4 or IPv6. Program will exit now "
 fi
+Reinstall
