@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.12                                      #"
+  echo "#  Version : 1.20                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
@@ -343,9 +343,9 @@ function Preparation() {
 		read -r -p "Please input your public key. What you input is case-sensitive : " ChosenPUBKEY
 		if [[ "$ChosenPUBKEY" == '' ]] ; then 
 		    echo -e "Empty input, this program will exit now"
-			exit 1
+		    exit 1
 		fi
-		echo -e "Public key you input is as follow."
+		echo -e "\nPublic key you input is as follow.\n"
 		echo -e "${ChosenPUBKEY}"
 		ChosenPasswd=""
 		sed -i '/PasswordAuthentication yes/d' ./Core.sh
