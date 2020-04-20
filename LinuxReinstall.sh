@@ -358,7 +358,7 @@ function Preparation() {
 		if [[ "$ChosenPasswd" == '' ]] ; then 
 		ChosenPasswd=${PasswdDefault}
 		fi
-		echo -e "Passwd you want is ${ChosenPasswd}"
+		echo -e "\nPasswd you want is ${ChosenPasswd}.\n"
 		ChosenPasswd="-p ${ChosenPasswd}"
 		sed -i '/PasswordAuthentication no/d' ./Core.sh
 		sed -i '/PubkeyAuthentication yes/d' ./Core.sh
