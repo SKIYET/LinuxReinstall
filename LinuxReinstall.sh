@@ -15,7 +15,7 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.10                                      #"
+  echo "#  Version : 1.11                                      #"
   echo "#                                                      #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
@@ -341,6 +341,11 @@ function Preparation() {
   if [[ "$ChosenSSHPUB" == '' ]] || [[ "$ChosenSSHPUB" == 'y' ]] || [[ "$ChosenSSHPUB" == 'yes' ]]; then
 		echo -e "\n"
 		read -r -p "Please input your public key. What you input is case-sensitive : " ChosenPUBKEY
+		if [[ "$ChosenPUBKEY" == '' ]] ; then 
+		    echo -e "Empty input, this program will exit now"
+			exit 1
+		fi
+		echo -e "Public key you input is ${ChosenPUBKEY}"
 		ChosenPasswd=""
 		sed -i '/PasswordAuthentication yes/d' ./Core.sh
 		sed -i "s@TargetPUBKEY@${ChosenPUBKEY}@" ./Core.sh
@@ -400,14 +405,14 @@ function Preparation() {
   
   echo -e "\n"
   echo -e "Do you want to install the extra firmware?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenFirmware
+  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenFirmware
   ChosenFirmware=$(echo ${ChosenFirmware}|tr [A-Z] [a-z])
-  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]] ; then  
-	 ChosenFirmware='-firmware'
-	 echo "Extra firmware will be installed."
-  elif [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]]; then 
-	   ChosenFirmware=''
+  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]] ; then  
+	 ChosenFirmware=''
 	 echo "Extra firmware is not selected."
+  elif [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]]; then 
+	   ChosenFirmware='-firmware'
+	   echo "Extra firmware will be installed."
   fi
   
   echo -e "\n"
