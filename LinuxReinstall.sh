@@ -15,8 +15,8 @@ function CopyRight() {
   echo "#  Author: Skiyet                                      #"
   echo "#  Blog: www.skiyet.com                                #"
   echo "#  GIT: https://github.com/SKIYET/LinuxReinstall       #"
-  echo "#  Version : 1.50                                      #"
-  echo "#  Updates : Now public key is allowed in ssh login    #"
+  echo "#  Version : 2.0                                     #"
+  echo "#  Updates : Support Debian 11 and Ubuntu 20.04    #"
   echo "#  Special Thanks to Vicer , hiCasper and Veip007      #"
   echo "#                                                      #"
   echo "########################################################"
@@ -158,13 +158,13 @@ function IPv4Mode() {
 function IPv6Mode(){
   echo -e "\n"
   echo "IPv6 mode may be testing. Now we will list your network configurations"
-  IPv6MASKUrl="https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Tools/IPv6MASK.txt"
+  IPv6MASKUrl="https://gdrive.et.workers.dev/Software/System/Linux/ScriptForReinstallation/SKIYET/Tools/IPv6MASK.txt"
   if [ -f "./IPv6MASK.txt" ]; then
    rm -f ./IPv6MASK.txt
   fi
   wget --no-check-certificate -qO  IPv6MASK.txt ${IPv6MASKUrl}
   sed 's/ //g' IPv6MASK.txt >IPv6MASK2.txt && rm -rf IPv6MASK.txt
-  IPV6ADDR=$(curl -s ipv6.ip.sb)
+  IPV6ADDR=$(curl -s -6 https://www.trackip.net/ip)
   IPV6GATE=$(route -6 -n | grep UG | awk '{print $2}'|sed '/^fe80:/d')
   IPV6SUBCOUNT=$(ip addr |grep ${IPV6ADDR}| awk -F '/' '{print $2}' | tr -d 'a-zA-Z' | sed 's/ //g')
   IPV6MASK=$(cat IPv6MASK2.txt|grep /$IPV6SUBCOUNT| awk -F '=' '{print $2}')
@@ -224,23 +224,26 @@ function IPv6Mode(){
 
 
 function Mirror(){
-        echo "Geographical location detection will start"
-        Country=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip)
-        Country=${Country##*"country_code"} && Country=${Country%"region_code"*}
-        Country=${Country#*\:} && Country=${Country#*\"}
-        Country=${Country%,*} && Country=${Country%\"*}
-        echo "Location : ${Country}"
-         Country=$(echo ${Country}|tr [A-Z] [a-z])
+		CopyRight
+        echo -e "Geographical location detection is performing\n"
+        Country=$(curl -sL https://api.myip.com | grep -Eo '"country":"([A-Za-z]{1,99}?)"' | sort -V | tail -1| sed 's/"country"://g'|sed 's/"//g')
+		Country_code=$(curl -sL https://api.myip.com | grep -Eo '"cc":"([A-Z]{1,9}?)"' | sort -V | tail -1| sed 's/"cc"://g'|sed 's/"//g')
+		if [[ "$Country" != "" ]];then
+				echo -e "Location of your server : ${Country}\n"
+        elif [[ "$Country" == "" ]] || [[ "$Country" == " " ]]; then
+                echo -e "Location detection cannot be performed properly\n"
+        fi      
+        Country_code=$(echo ${Country_code}|tr [A-Z] [a-z])
         if [[ "$Country" == "cn" ]];then
                 echo "USTC mirror will be adopted in all of platforms."
                 DebianMirror="--mirror http://mirrors.ustc.edu.cn/debian/"
                 UbuntuMirror="--mirror http://mirrors.ustc.edu.cn/ubuntu/"
                 CentosMirror="--mirror http://mirrors.ustc.edu.cn/centos/"
         elif [[ "$Country" != "cn" ]]; then
-                echo "Specific country mirror will be adopted on debian/ubuntu platforms."
+                echo "Corresponding country mirror will be adopted on debian/ubuntu platforms."
                 echo "Domestic mode will be adopted on centos platform."
-                DebianMirror="--mirror http://ftp.${Country}.debian.org/debian/"
-                UbuntuMirror="--mirror http://${Country}.archive.ubuntu.com/ubuntu/"
+                DebianMirror="--mirror http://ftp.${Country_code}.debian.org/debian/"
+                UbuntuMirror="--mirror http://${Country_code}.archive.ubuntu.com/ubuntu/"
                 CentosMirror=""
         elif [[ "$Country" == "" ]]; then
             echo "Domestic mode will be adopted on all of platforms."
@@ -252,7 +255,7 @@ function Mirror(){
 
 
 function Preparation() {
-  clear
+  #clear
   echo -e "\n"
   echo "Download core script now"
 
@@ -260,13 +263,11 @@ function Preparation() {
    rm -f ./Core.sh
   fi
 
-  CoreUrl="https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Core/Core.sh"
+  CoreUrl="https://gdrive.et.workers.dev/Software/System/Linux/ScriptForReinstallation/SKIYET/Core/Core.sh"
   wget --no-check-certificate -qO ./Core.sh ${CoreUrl} && chmod a+x ./Core.sh
-  #Remove some grub-installer configurations, or the grub installation will fail.
-  sed -i '/force-efi-extra-removable/d' ./Core.sh
-  CopyRight
+  #CopyRight
   echo -e "\n"
-  echo "Now you should input some parameters"
+  echo "Next, the preparation work will be performed meanwhile you will be asked to input some parameters"
   echo -e "\n"
   echo "Please input a distribution. What you input is NOT case-sensitive."
   read -r -p "Input (the first letter of) the distribution you want , Press ENTER to skip (default : debian) : " ChosenDist
@@ -306,9 +307,9 @@ function Preparation() {
 
   echo -e "\n"
   echo "Please input a version number for your distribution. Please note ONLY numbers are allowed here."
-  read -r -p "Input version here ,Press ENTER to skip (default : 10/18.04/6.9 for debian/ubuntu/centos) : " ChosenVersion
-  VerDefaultDeb='10 '
-  VerDefaultUbu='18.04 '
+  read -r -p "Input version here ,Press ENTER to skip (default : 11/20.04/6.9 for debian/ubuntu/centos) : " ChosenVersion
+  VerDefaultDeb='11 '
+  VerDefaultUbu='20.04 '
   VerDefaultCen='6.9 '
   if [[ "$ChosenVersion" == '' ]] && [[ "$ChosenDist" == '-d' ]]; then
          ChosenVersion="${VerDefaultDeb} "
@@ -359,7 +360,7 @@ function Preparation() {
                 ChosenPasswd=${PasswdDefault}
                 fi
                 echo -e "\nPasswd you want is ${ChosenPasswd}.\n"
-                ChosenPasswd="-p ${ChosenPasswd}"
+                ChosenPasswd="-p \"${ChosenPasswd}\""
                 sed -i '/PasswordAuthentication no/d' ./Core.sh
                 sed -i '/PubkeyAuthentication yes/d' ./Core.sh
                 sed -i '/AuthorizedKeysFile/d' ./Core.sh
@@ -373,9 +374,21 @@ function Preparation() {
   if [[ "$ChosenSSH" == '' ]] ; then
          ChosenSSH=${SSHDefault}
   fi
-  sed -i "s@TargetSSH@${ChosenSSH}@" ./Core.sh
+  ChosenSSH="-port \"${ChosenSSH}\""
   echo -e "Selected ssh port is ${ChosenSSH}"
 
+  echo -e "\n"
+  echo -e "Do you want to install the extra firmware?"
+  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenFirmware
+  ChosenFirmware=$(echo ${ChosenFirmware}|tr [A-Z] [a-z])
+  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]] ; then
+         ChosenFirmware='-firmware'
+         echo "Extra firmware will be installed."
+  elif [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]]; then
+           ChosenFirmware=''
+           echo "Extra firmware is not selected."
+  fi
+  
   echo -e "\n"
   echo -e "Does your server work with a IPv6-Only internet?"
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenIPV6
@@ -405,18 +418,6 @@ function Preparation() {
   fi
 
   echo -e "\n"
-  echo -e "Do you want to install the extra firmware?"
-  read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenFirmware
-  ChosenFirmware=$(echo ${ChosenFirmware}|tr [A-Z] [a-z])
-  if [[ "$ChosenFirmware" == '' ]] || [[ "$ChosenFirmware" == 'n' ]] || [[ "$ChosenFirmware" == 'no' ]] ; then
-         ChosenFirmware=''
-         echo "Extra firmware is not selected."
-  elif [[ "$ChosenFirmware" == 'y' ]] || [[ "$ChosenFirmware" == 'yes' ]]; then
-           ChosenFirmware='-firmware'
-           echo "Extra firmware will be installed."
-  fi
-
-  echo -e "\n"
   echo -e "Do you want install the linux automatically?"
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : y) : " ChosenAutoInstall
   ChosenAutoInstall=$(echo ${ChosenAutoInstall}|tr [A-Z] [a-z])
@@ -429,7 +430,7 @@ function Preparation() {
   fi
 
   echo -e "\n"
-  echo -e "If your memory is 512M or lower, The low memory mode should be enabled."
+  echo -e "If your memory is lower than 850MB, The low memory mode would be enabled."
   echo -e "This option is valid only when you choose debian or ubuntu."
   read -r -p "Please input y(es) or n(o) , Press ENTER to skip (default : n) : " ChosenLowMemMode
   ChosenLowMemMode=$(echo ${ChosenLowMemMode}|tr [A-Z] [a-z])
@@ -464,8 +465,11 @@ nameserver 2001:4860:4860::8844
 EOF
   fi
 
-  UserParameter="${ChosenFirmware} ${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall} ${ChosenPasswd} ${MirrorFinal}"
-
+  UserParameter="${ChosenDist} ${ChosenVersion} ${ChosenX64} ${ChosenAutoInstall} ${ChosenPasswd} ${ChosenSSH} ${ChosenFirmware} ${MirrorFinal}"
+  echo -e "\n"
+  echo "The Selected parameters is listed as follows."
+  echo $UserParameter
+  read -s -n1 -p "Press any key to continue..."
 }
 function Reinstall() {
   CopyRight
