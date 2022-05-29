@@ -158,7 +158,7 @@ function IPv4Mode() {
 function IPv6Mode(){
   echo -e "\n"
   echo "IPv6 mode may be testing. Now we will list your network configurations"
-  IPv6MASKUrl="https://gdrive.et.workers.dev/Software/System/Linux/ScriptForReinstallation/SKIYET/Tools/IPv6MASK.txt"
+  IPv6MASKUrl="https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Tools/IPv6MASK.txt"
   if [ -f "./IPv6MASK.txt" ]; then
    rm -f ./IPv6MASK.txt
   fi
@@ -263,7 +263,7 @@ function Preparation() {
    rm -f ./Core.sh
   fi
 
-  CoreUrl="https://gdrive.et.workers.dev/Software/System/Linux/ScriptForReinstallation/SKIYET/Core/Core.sh"
+  CoreUrl="https://raw.githubusercontent.com/SKIYET/LinuxReinstall/master/Core/Core.sh"
   wget --no-check-certificate -qO ./Core.sh ${CoreUrl} && chmod a+x ./Core.sh
   #CopyRight
   echo -e "\n"
