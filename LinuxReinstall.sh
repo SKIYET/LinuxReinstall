@@ -226,7 +226,7 @@ function IPv6Mode(){
 function Mirror(){
 		CopyRight
         echo -e "Geographical location detection is performing\n"
-        Country=$(curl -sL https://api.myip.com | grep -Eo '"country":"([A-Za-z]{1,99}?)"' | sort -V | tail -1| sed 's/"country"://g'|sed 's/"//g')
+        Country=$(curl -sL https://api.myip.com | grep -Eo '"country":"([A-Za-z ]{1,99}?)"' | sort -V | tail -1| sed 's/"country"://g'|sed 's/"//g')
 		Country_code=$(curl -sL https://api.myip.com | grep -Eo '"cc":"([A-Z]{1,9}?)"' | sort -V | tail -1| sed 's/"cc"://g'|sed 's/"//g')
 		if [[ "$Country" != "" ]];then
 				echo -e "Location of your server : ${Country}\n"
